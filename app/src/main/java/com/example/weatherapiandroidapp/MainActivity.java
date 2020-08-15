@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Instantiate the RequestQueue. we are using queue bcz  it will keep the oncomming request in a queue
-                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+               // RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                RequestQueue requestQueue;
                 String url ="https://www.metaweather.com/api/location/search/?query="+ET_dataInput.getText().toString();
 
                 JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -67,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 // Add the request to the RequestQueue.
-                queue.add(request);
+               // queue.add(request);
+                // Add a request (in this example, called stringRequest) to your RequestQueue.
+                MySingleton.getInstance(MainActivity.this).addToRequestQueue(request);
 
                      // Request a string response from the provided URL.
                /* StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
