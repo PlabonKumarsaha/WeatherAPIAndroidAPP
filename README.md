@@ -18,7 +18,7 @@ while the system fetches network data. So there will be no freez up and the app 
 - Asynchornous method with call back!
 
 ### Process :
-detils : https://developer.android.com/training/volley
+detils : https://developer.android.com/training/volley <br>
 1. Made three Button named btn_getCityId,btn_getWeatherByCityId,btn_getWeatherByCityName.
 2. Volley is an HTTP library that makes networking for Android apps easier and most importantly, faster(then the other network operation)
 3. Add 'implementation 'com.android.volley:volley:1.1.1'' to the dependenyc library and sync.
@@ -30,18 +30,17 @@ detils : https://developer.android.com/training/volley
     4.chnage the string URL to "https://www.metaweather.com/api/location/search/?query=london" <br>
     5.All the String requestes will be added in queue.
 5. Now we will be changing the StringRequest to JSONArray Object format request.
-ex : a JSON object 
-[{"title":"London",
-"location_type":"City",
-"woeid":44418,
-"latt_long":"51.506321,
--0.12714"}]  ..here {}- json object and [] -JSON array
+ex : a JSON object  <br>
+[{"title":"London", <br>
+"location_type":"City", <br>
+"woeid":44418, <br>
+"latt_long":"51.506321, -0.12714"}]  ..here {}- json object and [] -JSON array <br>
 
 
- Advantage of this is that the array can be pieced.
-The last statement means that the obbject can be divided and a selective part of that object can also be retireved
-                            JSONObject cityInfo =response.getJSONObject(0); //takes the first object from the given URL
-                            String cityId = cityInfo.getString("woeid"); //only takes the id part from the whole afframetioned object
+ Advantage of this is that the array can be pieced. <br>
+The last statement means that the obbject can be divided and a selective part of that object can also be retireved <br>
+                            JSONObject cityInfo =response.getJSONObject(0); //takes the first object from the given URL <br>
+                            String cityId = cityInfo.getString("woeid"); //only takes the id part from the whole afframetioned object <br>
                             Toast.makeText(getApplicationContext(),"City Id "+cityId,Toast.LENGTH_SHORT).show();
 
 
@@ -52,15 +51,16 @@ see documentation (Transmit network data : Make a satndard Request): https://dev
 Here in the Edit text you can enter your city name to get your city 'woeid' toasted!
 
 8. We can modify the process using a singleton(a class that only have one instance). It will help to limit the request to go through one request queue.
+
 ex : RequestQueue queue = Volley.newRequestQueue(MainActivity.this). This line is here and at the end we have this  queue.add(request); . We want to confind the request
 only to one. So have to set up this request queue. <br>
+
            1.first make a 'MySingleton' class and copy the code ,MySingleton from 'https://developer.android.com/training/volley/requestqueue' and paste it.<br>
            2.comment out the exiting queue and make a nother queue.
            3. Add either of this two ways and to get the singleTon class insatnces
-            // Get a RequestQueue
+             // Get a RequestQueue
              RequestQueue queue = MySingleton.getInstance(this.getApplicationContext()).
              getRequestQueue();
-   
              // ...
-            // Add a request (in this example, called stringRequest) to your RequestQueue.
-            MySingleton.getInstance(this).addToRequestQueue(stringRequest);
+             // Add a request (in this example, called stringRequest) to your RequestQueue.
+             MySingleton.getInstance(this).addToRequestQueue(stringRequest);
