@@ -24,10 +24,10 @@ detils : https://developer.android.com/training/volley
 3. Add 'implementation 'com.android.volley:volley:1.1.1'' to the dependenyc library and sync.
 4. First try Send a simple request for volly :
 
-    1.Add the INTERNET permission
-    2. copy the first chunk of code from "https://developer.android.com/training/volley/simple"
-    3. then change the context type in RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-    4.chnage the string URL to "https://www.metaweather.com/api/location/search/?query=london"
+    1.Add the INTERNET permission <br>
+    2. copy the first chunk of code from "https://developer.android.com/training/volley/simple" <br>
+    3. then change the context type in RequestQueue queue = Volley.newRequestQueue(MainActivity.this); <br>
+    4.chnage the string URL to "https://www.metaweather.com/api/location/search/?query=london" <br>
     5.All the String requestes will be added in queue.
 5. Now we will be changing the StringRequest to JSONArray Object format request.
 ex : a JSON object 
@@ -53,8 +53,8 @@ Here in the Edit text you can enter your city name to get your city 'woeid' toas
 
 8. We can modify the process using a singleton(a class that only have one instance). It will help to limit the request to go through one request queue.
 ex : RequestQueue queue = Volley.newRequestQueue(MainActivity.this). This line is here and at the end we have this  queue.add(request); . We want to confind the request
-only to one. So have to set up this request queue. 
-           1.first make a 'MySingleton' class and copy the code ,MySingleton from 'https://developer.android.com/training/volley/requestqueue' and paste it.
+only to one. So have to set up this request queue. <br>
+           1.first make a 'MySingleton' class and copy the code ,MySingleton from 'https://developer.android.com/training/volley/requestqueue' and paste it.<br>
            2.comment out the exiting queue and make a nother queue.
            3. Add either of this two ways and to get the singleTon class insatnces
             // Get a RequestQueue
