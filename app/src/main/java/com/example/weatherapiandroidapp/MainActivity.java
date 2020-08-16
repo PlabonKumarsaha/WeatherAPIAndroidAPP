@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     Button btn_getCityId,btn_getWeatherByCityId,btn_getWeatherByCityName;
     EditText ET_dataInput;
     ListView lv_weatherReports;
+    WeatherDataService weatherDataService = new WeatherDataService(MainActivity.this);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +44,21 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-         WeatherDataService weatherDataService = new WeatherDataService(MainActivity.this);
-         String cityId = weatherDataService.getCityID(ET_dataInput.getText().toString());
+         //add the input text and volly listener
+         weatherDataService.getCityID(ET_dataInput.getText().toString(), new WeatherDataService.VolleyResponseListener() {
+             @Override
+             public void onError(String message) {
+                 Toast.makeText(getApplicationContext(),message.toString(),Toast.LENGTH_SHORT).show();
+
+             }
+
+             @Override
+             public void onResponse(String cityId) {
+                 Toast.makeText(getApplicationContext(),cityId.toString(),Toast.LENGTH_SHORT).show();
+
+             }
+         });
          //this does not return anything
-         Toast.makeText(getApplicationContext(),cityId.toString(),Toast.LENGTH_SHORT).show();
 
             }
         });

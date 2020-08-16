@@ -23,7 +23,12 @@ public class WeatherDataService {
         this.context = context;
     }
 
-    public String getCityID(String cityName ){
+    public interface VolleyResponseListener{
+        void onError(String message);
+        void onResponse(String cityId);
+    }
+
+    public void getCityID(String cityName, final VolleyResponseListener volleyResponseListener ){
 
         // Instantiate the RequestQueue. we are using queue bcz  it will keep the oncomming request in a queue
         // RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
@@ -37,18 +42,22 @@ public class WeatherDataService {
                 try {
                     JSONObject cityInfo =response.getJSONObject(0);
                      cityId = cityInfo.getString("woeid");
-                    Toast.makeText(context,"City Id "+cityId,Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(context,"City Id "+cityId,Toast.LENGTH_SHORT).show();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 Toast.makeText(context,response.toString(),Toast.LENGTH_SHORT).show();
+                //added the volly response here
+                volleyResponseListener.onResponse(cityId);
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context,error.toString(),Toast.LENGTH_SHORT).show();
+                //add volly error here
+                volleyResponseListener.onError("Something is wrong!");
 
             }
         });
@@ -56,7 +65,7 @@ public class WeatherDataService {
         // queue.add(request);
         // Add a request (in this example, called stringRequest) to your RequestQueue.
         MySingleton.getInstance(context).addToRequestQueue(request);
-        return  cityId;
+        //return  cityId;
 
 
     }
