@@ -40,56 +40,12 @@ public class MainActivity extends AppCompatActivity {
         btn_getCityId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Instantiate the RequestQueue. we are using queue bcz  it will keep the oncomming request in a queue
-               // RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                RequestQueue requestQueue;
-                String url ="https://www.metaweather.com/api/location/search/?query="+ET_dataInput.getText().toString();
 
-                JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
 
-                        try {
-                            JSONObject cityInfo =response.getJSONObject(0);
-                            String cityId = cityInfo.getString("woeid");
-                            Toast.makeText(getApplicationContext(),"City Id "+cityId,Toast.LENGTH_SHORT).show();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Toast.makeText(getApplicationContext(),response.toString(),Toast.LENGTH_SHORT).show();
-
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-                // Add the request to the RequestQueue.
-               // queue.add(request);
-                // Add a request (in this example, called stringRequest) to your RequestQueue.
-                MySingleton.getInstance(MainActivity.this).addToRequestQueue(request);
-
-                     // Request a string response from the provided URL.
-               /* StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                // Display the first 500 characters of the response string.
-                              //  textView.setText("Response is: "+ response.substring(0,500));
-                                Toast.makeText(getApplicationContext(),response.toString(),Toast.LENGTH_SHORT).show();
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                       // textView.setText("That didn't work!");
-                        Toast.makeText(getApplicationContext(),error.toString(),Toast.LENGTH_SHORT).show();
-                    }
-                });*/
-                // Add the request to the RequestQueue.
-              //  queue.add(stringRequest);
+         WeatherDataService weatherDataService = new WeatherDataService(MainActivity.this);
+         String cityId = weatherDataService.getCityID(ET_dataInput.getText().toString());
+         //this does not return anything
+         Toast.makeText(getApplicationContext(),cityId.toString(),Toast.LENGTH_SHORT).show();
 
             }
         });
