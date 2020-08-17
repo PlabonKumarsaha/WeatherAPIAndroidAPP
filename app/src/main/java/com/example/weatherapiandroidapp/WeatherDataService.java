@@ -8,14 +8,20 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WeatherDataService {
 
     public static final String weatherAPILink = "https://www.metaweather.com/api/location/search/?query=";
+    public static final String QUERY_FOR_CITY_WEATHER_BY_ID = "https://www.metaweather.com/api/location/";
+
     Context context;
     String cityId;
 
@@ -70,11 +76,39 @@ public class WeatherDataService {
 
     }
 
+
+    public void getCityForcastById(String cityId){
+        final List<WeatherReportModel>report = new ArrayList<>();
+        String url = QUERY_FOR_CITY_WEATHER_BY_ID + cityId;
+
+        //get JSON onject
+       final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url,null, new Response.Listener<JSONObject>() {
+           @Override
+           public void onResponse(JSONObject response) {
+
+               Toast.makeText(context,report.toString(),Toast.LENGTH_SHORT).show();
+           }
+       }, new Response.ErrorListener() {
+           @Override
+           public void onErrorResponse(VolleyError error) {
+
+           }
+       });
+
+        MySingleton.getInstance(context).addToRequestQueue(request);
+        }
+
 /*
-    public List<WeatherReportModel>getCityForcastById(String cityId){
 
+            @Override
+            public void onResponse(JSONArray response) {
+
+
+                //get property called "consolotated weather"
+
+        //get eatch item in the array and assign it to a new weather Report
     }
-
+/*
     public List<WeatherReportModel>getCityForcastById(String cityName){
 
     }

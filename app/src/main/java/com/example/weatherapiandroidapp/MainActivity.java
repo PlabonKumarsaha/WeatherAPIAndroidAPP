@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                weatherDataService.getCityForcastById("44418");
             }
         });
 
