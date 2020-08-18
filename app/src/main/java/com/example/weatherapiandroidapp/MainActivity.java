@@ -47,21 +47,21 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-         //add the input text and volly listener
-         weatherDataService.getCityID(ET_dataInput.getText().toString(), new WeatherDataService.VolleyResponseListener() {
-             @Override
-             public void onError(String message) {
-                 Toast.makeText(getApplicationContext(),message.toString(),Toast.LENGTH_SHORT).show();
+                //add the input text and volly listener
+                weatherDataService.getCityID(ET_dataInput.getText().toString(), new WeatherDataService.VolleyResponseListener() {
+                    @Override
+                    public void onError(String message) {
+                        Toast.makeText(getApplicationContext(), message.toString(), Toast.LENGTH_SHORT).show();
 
-             }
+                    }
 
-             @Override
-             public void onResponse(String cityId) {
-                 Toast.makeText(getApplicationContext(),cityId.toString(),Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onResponse(String cityId) {
+                        Toast.makeText(getApplicationContext(), cityId.toString(), Toast.LENGTH_SHORT).show();
 
-             }
-         });
-         //this does not return anything
+                    }
+                });
+                //this does not return anything
 
             }
         });
@@ -79,25 +79,42 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(List<WeatherReportModel> weatherReportModelList) {
                         //put the whole thing in listview
-                        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this,android.R.layout.simple_expandable_list_item_1,weatherReportModelList);
+                        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_expandable_list_item_1, weatherReportModelList);
                         lv_weatherReports.setAdapter(arrayAdapter);
 
 
-
                     }
-
-
+                    
                 });
             }
         });
 
+        //class the last function in the WeatherDataService
+
         btn_getWeatherByCityName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                weatherDataService.getCityForcastByName(ET_dataInput.getText().toString(), new WeatherDataService.CityForcastByNameCallback() {
+                    @Override
+                    public void onError(String message) {
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
+                    }
+
+                    @Override
+                    public void onResponse(List<WeatherReportModel> weatherReportModelList) {
+                        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_expandable_list_item_1, weatherReportModelList);
+                        lv_weatherReports.setAdapter(arrayAdapter);
+
+
+                    }
+                });
             }
         });
 
 
     }
-}
+
+
+
+    }

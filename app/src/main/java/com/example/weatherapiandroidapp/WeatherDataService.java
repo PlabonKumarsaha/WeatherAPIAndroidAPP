@@ -29,6 +29,7 @@ public class WeatherDataService {
         this.context = context;
     }
 
+    //syncing the code
     public interface VolleyResponseListener{
         void onError(String message);
         void onResponse(String cityId);
@@ -77,7 +78,7 @@ public class WeatherDataService {
 
     }
 
-
+ //to sync the code
     public interface ForecastById{
         void onError(String message);
         void onResponse(List<WeatherReportModel>weatherReportModelList );
@@ -142,8 +143,39 @@ public class WeatherDataService {
         MySingleton.getInstance(context).addToRequestQueue(request);
         }
 
+        //to sync the code
+        public interface CityForcastByNameCallback{
+            void onError(String message);
+            void onResponse(List<WeatherReportModel>weatherReportModelList );
+        }
 
-    public void getCityForcastById(String cityName){
+    public void getCityForcastByName(String cityName,final CityForcastByNameCallback cityForcastByNameCallback){
+
+
+        getCityID(cityName, new VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
+
+            }
+
+            @Override
+            public void onResponse(String cityId) {
+                   //now we have tech city id
+                getCityForcastById(cityId, new ForecastById() {
+                    @Override
+                    public void onError(String message) {
+
+                    }
+
+                    @Override
+                    public void onResponse(List<WeatherReportModel> weatherReportModelList) {
+
+                        cityForcastByNameCallback.onResponse(weatherReportModelList);
+                    }
+                });
+
+            }
+        });
         
 
     }
