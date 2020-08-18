@@ -142,21 +142,12 @@ public class WeatherDataService {
         MySingleton.getInstance(context).addToRequestQueue(request);
         }
 
-/*
 
-            @Override
-            public void onResponse(JSONArray response) {
-
-
-                //get property called "consolotated weather"
-
-        //get eatch item in the array and assign it to a new weather Report
-    }
-/*
-    public List<WeatherReportModel>getCityForcastById(String cityName){
+    public void getCityForcastById(String cityName){
+        
 
     }
-*/
+
 
 
 
