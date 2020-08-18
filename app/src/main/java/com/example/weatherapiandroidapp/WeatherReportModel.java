@@ -16,6 +16,9 @@ public class WeatherReportModel {
      private int humidity;
      private float visbility;
      private int preidctibility;
+    public WeatherReportModel(){
+
+    }
 
     public WeatherReportModel(int id, String weatherStateName, String weatherStateAbbr, String windDirectionCompas, String created, String applicable_date, float min_temp, float max_temp, float the_temp, float wind_speed, float wind_direction, int air_pressure, int humidity, float visbility, int preidctibility) {
         this.id = id;
@@ -37,13 +40,8 @@ public class WeatherReportModel {
 
     @Override
     public String toString() {
-        return "WeatherReportModel{" +
-                "id=" + id +
-                ", weatherStateName='" + weatherStateName + '\'' +
-                ", weatherStateAbbr='" + weatherStateAbbr + '\'' +
-                ", windDirectionCompas='" + windDirectionCompas + '\'' +
-                ", created='" + created + '\'' +
-                ", applicable_date='" + applicable_date + '\'' +
+        return  weatherStateName + '\'' +
+         ", date='" + applicable_date + '\'' +
                 ", min_temp=" + min_temp +
                 ", max_temp=" + max_temp +
                 ", the_temp=" + the_temp +

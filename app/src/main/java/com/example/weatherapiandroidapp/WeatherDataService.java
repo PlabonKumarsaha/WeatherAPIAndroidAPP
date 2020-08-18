@@ -50,6 +50,7 @@ public class WeatherDataService {
                      cityId = cityInfo.getString("woeid");
                   //  Toast.makeText(context,"City Id "+cityId,Toast.LENGTH_SHORT).show();
 
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -77,16 +78,59 @@ public class WeatherDataService {
     }
 
 
-    public void getCityForcastById(String cityId){
-        final List<WeatherReportModel>report = new ArrayList<>();
+    public interface ForecastById{
+        void onError(String message);
+        void onResponse(List<WeatherReportModel>weatherReportModelList );
+    }
+
+    public void getCityForcastById(String cityId, final ForecastById forecastById){
+        final List<WeatherReportModel>weatherReportModels = new ArrayList<>();
         String url = QUERY_FOR_CITY_WEATHER_BY_ID + cityId;
 
         //get JSON onject
        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url,null, new Response.Listener<JSONObject>() {
            @Override
            public void onResponse(JSONObject response) {
+                //toast was for testing
+               //Toast.makeText(context,report.toString(),Toast.LENGTH_SHORT).show();
+               try {
 
-               Toast.makeText(context,report.toString(),Toast.LENGTH_SHORT).show();
+                   //crated a JSOnArray to gee the JSON object
+                   JSONArray consoladated_weather_list =  response.getJSONArray("consolidated_weather");
+
+
+
+                   for(int i = 0;i<consoladated_weather_list.length();i++) {
+
+                       WeatherReportModel one_day_weather = new WeatherReportModel();
+
+                       JSONObject first_day_fromAPI = (JSONObject) consoladated_weather_list.get(i);
+
+                       one_day_weather.setId(first_day_fromAPI.getInt("id"));
+                       one_day_weather.setWeatherStateName(first_day_fromAPI.getString("weather_state_name"));
+                       one_day_weather.setWeatherStateAbbr(first_day_fromAPI.getString("weather_state_abbr"));
+                       one_day_weather.setWindDirectionCompas(first_day_fromAPI.getString("wind_direction_compass"));
+                       one_day_weather.setCreated(first_day_fromAPI.getString("created"));
+                       one_day_weather.setApplicable_date(first_day_fromAPI.getString("applicable_date"));
+                       one_day_weather.setMin_temp((float) first_day_fromAPI.getDouble("min_temp"));
+                       one_day_weather.setMax_temp((float) first_day_fromAPI.getDouble("max_temp"));
+                       one_day_weather.setThe_temp((float) first_day_fromAPI.getDouble("the_temp"));
+                       one_day_weather.setWind_speed((float) first_day_fromAPI.getDouble("wind_speed"));
+                       one_day_weather.setWind_direction((float) first_day_fromAPI.getDouble("wind_direction"));
+                       one_day_weather.setAir_pressure(first_day_fromAPI.getInt("air_pressure"));
+                       one_day_weather.setHumidity(first_day_fromAPI.getInt("humidity"));
+                       one_day_weather.setVisbility((float) first_day_fromAPI.getDouble("visibility"));
+                       one_day_weather.setPreidctibility(first_day_fromAPI.getInt("predictability"));
+                       weatherReportModels.add(one_day_weather);
+                   }
+
+
+                       forecastById.onResponse(weatherReportModels);
+
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               }
+
            }
        }, new Response.ErrorListener() {
            @Override
