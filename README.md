@@ -64,3 +64,77 @@ only to one. So have to set up this request queue. <br>
              // ...
              // Add a request (in this example, called stringRequest) to your RequestQueue.
              MySingleton.getInstance(this).addToRequestQueue(stringRequest);
+             
+             
+9. We can make this whole process easier by making a class name WeatherDataService. public String getCityID(String cityName )method will take the pervious codes that were used in btn click.
+Now the btn_click will call the instance of that class and function will return the ID of the city.
+
+10. this Toast.makeText(getApplicationContext(),cityId.toString(),Toast.LENGTH_SHORT).show();.Msg  returns cityId in the MainActivity class but retruns nothing in the CityID in WeatherDataService class.
+The toast of WeatherDataService , class didn't work beacuse it is a backgorund process. Volly library keeps it in a queue in the background.Beacuse it needs couple of seconds to load the data.
+We don't want to freez the UI in that meantime.So the process is in the background. So to solve this we willbe using 'CallBack'.(callback :A way to scedule a methodcall when another method finishes it's task)
+
+
+
+11. We will now try to make the code async :
+In the WeatherDataService class we take na interfce as such :
+public interface volleyResponseListener{
+        void onError(String message);
+        void onResponse(String cityId); //kept similarity with the return type of gerCityID
+    }
+
+Next, take the interface object as parameter like this : public void  getCityID(String cityName,VolleyResponseListener volleyResponseListener).
+Now in the Main Class  weatherDataService.getCityID(ET_dataInput.getText().toString(), new WeatherDataService.VolleyResponseListener()  add VolyResponse listener(which is a callback method) in the BtnClick listner.
+
+
+12.Now let's work on getCityForcastById(String cityId) method. the following snnipet was donein this method .
+
+ public void getCityForcastById(String cityId){
+        final List<WeatherReportModel>report = new ArrayList<>();
+        String url = QUERY_FOR_CITY_WEATHER_BY_ID + cityId;
+
+        //get JSON onject
+       final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url,null, new Response.Listener<JSONObject>() {
+           @Override
+           public void onResponse(JSONObject response) {
+
+               Toast.makeText(context,report.toString(),Toast.LENGTH_SHORT).show();
+           }
+       }, new Response.ErrorListener() {
+           @Override
+           public void onErrorResponse(VolleyError error) {
+
+           }
+       });
+
+        MySingleton.getInstance(context).addToRequestQueue(request);
+        } //this toasts the "consolidated_weather" weather data as toasts
+
+
+13.Now to get a first day report from the api(single array position from the array )  we have ti create a  JSONArray consoladated_weather_list =  response.getJSONArray("consolidated_weather"); and a WeatherRepostModel class 
+instance(WeatherReportModel first_day ).
+
+next do this to set all the values. ex :
+
+  WeatherReportModel one_day_weather = new WeatherReportModel();
+ JSONObject first_day_fromAPI = (JSONObject) consoladated_weather_list.get(0);
+
+                   first_day.setId(first_day_fromAPI.getInt("id"));
+                   first_day.setWeatherStateName(first_day_fromAPI.getString("weather_state_name"));
+                   first_day.setWeatherStateAbbr(first_day_fromAPI.getString("weather_state_abbr"));
+                   first_day.setWindDirectionCompas(first_day_fromAPI.getString("wind_direction_compass"));
+                   first_day.setCreated(first_day_fromAPI.getString("created"));
+                   first_day.setApplicable_date(first_day_fromAPI.getString("applicable_date"));
+                   first_day.setMin_temp((float) first_day_fromAPI.getDouble("min_temp"));
+                   first_day.setMax_temp((float) first_day_fromAPI.getDouble("max_temp"));
+                   first_day.setThe_temp((float) first_day_fromAPI.getDouble("the_temp"));
+                   first_day.setWind_speed((float) first_day_fromAPI.getDouble("wind_speed"));
+                   first_day.setWind_direction((float) first_day_fromAPI.getDouble("wind_direction"));
+                   first_day.setAir_pressure(first_day_fromAPI.getInt("air_pressure"));
+                   first_day.setHumidity(first_day_fromAPI.getInt("humidity"));
+                   first_day.setVisbility((float) first_day_fromAPI.getDouble("visibility"));
+                   first_day.setPreidctibility( first_day_fromAPI.getInt("predictability"));
+
+The above code will only work for one day. We can make an itteration to show the list of multiple days in a list.The list will be activated with the help of an simple adapter.
+
+14.
+
