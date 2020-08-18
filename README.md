@@ -136,5 +136,10 @@ next do this to set all the values. ex :
 
 The above code will only work for one day. We can make an itteration to show the list of multiple days in a list.The list will be activated with the help of an simple adapter.
 
-14.
+14.All the above terms we were getting results by city id .But now we will try to get the result by cityName.
+To do that we must first fetch the city id by city name. and then with the city id will help us get city forcast.
+getCityForcastById method will call the API  twice..firt it will get id by city name and then in the response. It will
+get city forcast by that id name. This all will work on "weather by name" button.
+
+
 
